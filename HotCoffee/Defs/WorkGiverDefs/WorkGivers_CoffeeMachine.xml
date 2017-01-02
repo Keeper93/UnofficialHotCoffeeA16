@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<WorkGivers>
+
+	<WorkGiverDef>
+		<defName>DoBillsCoffee</defName>
+		<label>make coffee at the coffee machine</label>
+		<giverClass>WorkGiver_DoBill</giverClass>
+		<workType>Cooking</workType>
+		<priorityInType>80</priorityInType>
+		<fixedBillGiverDefs>
+			<li>ElectricCoffeeMachine</li>
+		</fixedBillGiverDefs>
+		<verb>brew</verb>
+		<gerund>brewing at</gerund>
+		<requiredCapacities>
+			<li>Manipulation</li>
+		</requiredCapacities>
+		<prioritizeSustains>true</prioritizeSustains>
+	</WorkGiverDef>
+
+	<WorkGiverDef>
+		<defName>DoBillsDecaffeinate</defName>
+		<label>decaffeinate coffee beans at the decaffeination station.</label>
+		<giverClass>WorkGiver_DoBill</giverClass>
+		<workType>Cooking</workType>
+		<priorityInType>85</priorityInType>
+		<fixedBillGiverDefs>
+			<li>ElectricDecaffeinationStation</li>
+		</fixedBillGiverDefs>
+		<verb>decaffeinate</verb>
+		<gerund>decaffeinating at</gerund>
+		<requiredCapacities>
+			<li>Manipulation</li>
+		</requiredCapacities>
+		<prioritizeSustains>true</prioritizeSustains>
+	</WorkGiverDef>
+
+</WorkGivers>

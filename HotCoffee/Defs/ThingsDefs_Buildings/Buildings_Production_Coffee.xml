@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ThingDefs>
+
+	<!-- Building bases -->
+
+	<ThingDef Name="BuildingBase" Abstract="True">
+		<category>Building</category>
+		<thingClass>Building</thingClass>
+		<soundImpactDefault>BulletImpactMetal</soundImpactDefault>
+		<selectable>true</selectable>
+		<drawerType>MapMeshAndRealTime</drawerType>
+		<terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
+		<repairEffect>Repair</repairEffect>
+		<leaveResourcesWhenKilled>true</leaveResourcesWhenKilled>
+		<filthLeaving>BuildingRubble</filthLeaving>
+	</ThingDef>
+
+	<ThingDef Name="BenchBase" ParentName="BuildingBase" Abstract="True">
+		<castEdgeShadows>true</castEdgeShadows>
+		<staticSunShadowHeight>0.20</staticSunShadowHeight>
+	</ThingDef>
+
+	<!-- Coffee machines -->
+
+	<ThingDef ParentName="BenchBase">
+		<defName>ElectricCoffeeMachine</defName>
+		<label>electric coffee machine</label>
+		<ThingClass>Building_WorkTable_HeatPush</ThingClass>
+		<Description>An electrically-powered coffee machine.</Description>
+		<graphicData>
+			<texPath>Things/Buildings/Production/ElectricCoffeeMachine</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+			<damageData>
+				<cornerTL>Damage/Corner</cornerTL>
+				<cornerTR>Damage/Corner</cornerTR>
+				<cornerBL>Damage/Corner</cornerBL>
+				<cornerBR>Damage/Corner</cornerBR>
+			</damageData>
+		</graphicData>
+		<constructEffect>ConstructMetal</constructEffect>
+		<CostList>
+			<Steel>40</Steel>
+			<Component>2</Component>
+		</CostList>
+		<AltitudeLayer>Building</AltitudeLayer>
+		<fillPercent>0.5</fillPercent>
+		<useHitPoints>True</useHitPoints>
+		<statBases>
+			<WorkToMake>1000</WorkToMake>
+			<MaxHitPoints>180</MaxHitPoints>
+			<Flammability>1.0</Flammability>
+		</statBases>
+		<Size>(1,1)</Size>
+		<DesignationCategory>Production</DesignationCategory>
+		<Passability>PassThroughOnly</Passability>
+		<pathCost>70</pathCost>
+		<hasInteractionCell>True</hasInteractionCell>
+		<interactionCellOffset>(0,0,-1)</interactionCellOffset>
+		<surfaceType>Item</surfaceType>
+		<inspectorTabs>
+			<li>ITab_Bills</li>
+		</inspectorTabs>
+		<comps>
+			<li Class="CompProperties_Power">
+				<compClass>CompPowerTrader</compClass>
+				<startElectricalFires>true</startElectricalFires>
+				<basePowerConsumption>200</basePowerConsumption>
+			</li>
+			<li Class="CompProperties_Flickable"/>
+			<li Class="CompProperties_Breakdownable"/>
+		</comps>
+		<building>
+			<isMealSource>true</isMealSource>
+			<spawnedConceptLearnOpportunity>BillsTab</spawnedConceptLearnOpportunity>
+			<heatPerTickWhileWorking>0.25</heatPerTickWhileWorking>
+		</building>
+		<researchPrerequisites>
+			<li>SimpleCoffee</li>
+		</researchPrerequisites>
+	</ThingDef>
+
+	<ThingDef ParentName="BenchBase">
+		<defName>ElectricDecaffeinationStation</defName>
+		<label>electric decaffeination station</label>
+		<ThingClass>Building_WorkTable_HeatPush</ThingClass>
+		<Description>An electrically-powered decaffeination station.</Description>
+		<graphicData>
+			<texPath>Things/Buildings/Production/ElectricDecaffeinationStation</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+			<damageData>
+				<cornerTL>Damage/Corner</cornerTL>
+				<cornerTR>Damage/Corner</cornerTR>
+				<cornerBL>Damage/Corner</cornerBL>
+				<cornerBR>Damage/Corner</cornerBR>
+			</damageData>
+		</graphicData>
+		<constructEffect>ConstructMetal</constructEffect>
+		<CostList>
+			<Steel>75</Steel>
+			<Component>5</Component>
+		</CostList>
+		<AltitudeLayer>Building</AltitudeLayer>
+		<fillPercent>0.5</fillPercent>
+		<useHitPoints>True</useHitPoints>
+		<statBases>
+			<WorkToMake>1000</WorkToMake>
+			<MaxHitPoints>180</MaxHitPoints>
+			<Flammability>1.0</Flammability>
+		</statBases>
+		<Size>(1,1)</Size>
+		<DesignationCategory>Production</DesignationCategory>
+		<Passability>PassThroughOnly</Passability>
+		<pathCost>70</pathCost>
+		<hasInteractionCell>True</hasInteractionCell>
+		<interactionCellOffset>(0,0,-1)</interactionCellOffset>
+		<surfaceType>Item</surfaceType>
+		<inspectorTabs>
+			<li>ITab_Bills</li>
+		</inspectorTabs>
+		<comps>
+			<li Class="CompProperties_Power">
+				<compClass>CompPowerTrader</compClass>
+				<startElectricalFires>true</startElectricalFires>
+				<basePowerConsumption>200</basePowerConsumption>
+			</li>
+			<li Class="CompProperties_Flickable"/>
+			<li Class="CompProperties_Breakdownable"/>
+		</comps>
+		<building>
+			<isMealSource>true</isMealSource>
+			<spawnedConceptLearnOpportunity>BillsTab</spawnedConceptLearnOpportunity>
+			<heatPerTickWhileWorking>0.25</heatPerTickWhileWorking>
+		</building>
+		<researchPrerequisites>
+			<li>SweetDecafCoffee</li>
+		</researchPrerequisites>
+	</ThingDef>
+
+</ThingDefs>

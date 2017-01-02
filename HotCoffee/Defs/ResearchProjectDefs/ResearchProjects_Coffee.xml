@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+	<ResearchProjectDef>
+		<defName>PrimitiveCoffee</defName>
+		<label>primitive coffee</label>
+		<description>Make primitive coffee, it gives a wide range of effects to whomever consumes it. (Teir 1 of coffeeness)</description>
+		<baseCost>150</baseCost>
+		<techLevel>Neolithic</techLevel>
+		<tags>
+			<li>TribalStart</li>
+			<li>ClassicStart</li>
+		</tags>
+	</ResearchProjectDef>
+
+	<ResearchProjectDef>
+		<defName>SimpleCoffee</defName>
+		<label>simple coffee</label>
+		<description>Make simple coffee, it gives a wide range of effects to whomever consumes it. Unlocks the electric coffee machine. (Teir 2 of coffeeness)</description>
+		<baseCost>300</baseCost>
+		<techLevel>Industrial</techLevel>
+		<prerequisites>
+			<li>Electricity</li>
+			<li>PrimitiveCoffee</li>
+		</prerequisites>
+		<tags>
+			<li>ClassicStart</li>
+		</tags>
+	</ResearchProjectDef>
+
+	<ResearchProjectDef>
+		<defName>BuzzCoffee</defName>
+		<label>buzz coffee</label>
+		<description>Make buzz coffee, it's very potent but can be dangerous to consume regularly. (Teir 3 of coffeeness)</description>
+		<baseCost>500</baseCost>
+		<techLevel>Industrial</techLevel>
+		<prerequisites>
+			<li>SimpleCoffee</li>
+		</prerequisites>
+	</ResearchProjectDef>
+
+	<ResearchProjectDef>
+		<defName>SweetDecafCoffee</defName>
+		<label>sweet decaf coffee</label>
+		<description>Make sweet decaf coffee, it's less addictive and makes colonists happy. Unlocks the decaffeination station. (Teir 4 of coffeeness)</description>
+		<baseCost>1000</baseCost>
+		<techLevel>Industrial</techLevel>
+		<prerequisites>
+			<li>BuzzCoffee</li>
+		</prerequisites>
+	</ResearchProjectDef>
+
+</Defs>

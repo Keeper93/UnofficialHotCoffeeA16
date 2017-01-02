@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<RecipeDefs>
+
+	<RecipeDef>
+		<defName>MakePrimitiveCoffee</defName>
+		<label>make primitive coffee</label>
+		<description>Make a cup of primitive coffee using raw coffee beans.</description>
+		<jobString>Making primitive coffee.</jobString>
+		<workSpeedStat>BrewingSpeed</workSpeedStat>
+		<requiredGiverWorkType>Cooking</requiredGiverWorkType>
+		<effectWorking>Cook</effectWorking>
+		<soundWorking>Recipe_Brewing</soundWorking>
+		<allowMixingIngredients>true</allowMixingIngredients>
+		<workAmount>600</workAmount>
+		<targetCountAdjustment>1</targetCountAdjustment>
+		<recipeUsers>
+			<li>Campfire</li>
+			<li>FueledStove</li>
+			<li>ElectricStove</li>
+		</recipeUsers>
+		<ingredients>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>RawCoffeeBeans</li>
+					</thingDefs>
+				</filter>
+				<count>25</count>
+			</li>
+		</ingredients>
+		<fixedIngredientFilter>
+			<thingDefs>
+				<li>RawCoffeeBeans</li>
+			</thingDefs>
+		</fixedIngredientFilter>
+		<products>
+			<PrimitiveCoffee>5</PrimitiveCoffee>
+		</products>
+		<workSkill>Cooking</workSkill>
+		<researchPrerequisite>PrimitiveCoffee</researchPrerequisite>
+	</RecipeDef>
+
+	<RecipeDef>
+		<defName>BrewSimpleCoffee</defName>
+		<label>brew simple coffee</label>
+		<description>Make a cup of simple coffee using cooked coffee beans.</description>
+		<jobString>Brewing simple coffee.</jobString>
+		<workSpeedStat>BrewingSpeed</workSpeedStat>
+		<requiredGiverWorkType>Cooking</requiredGiverWorkType>
+		<effectWorking>Cook</effectWorking>
+		<soundWorking>Recipe_Brewing</soundWorking>
+		<allowMixingIngredients>true</allowMixingIngredients>
+		<workAmount>600</workAmount>
+		<targetCountAdjustment>1</targetCountAdjustment>
+		<recipeUsers>
+			<li>ElectricCoffeeMachine</li>
+		</recipeUsers>
+		<ingredients>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>CookedCoffeeBeans</li>
+					</thingDefs>
+				</filter>
+				<count>25</count>
+			</li>
+		</ingredients>
+		<fixedIngredientFilter>
+			<thingDefs>
+				<li>CookedCoffeeBeans</li>
+			</thingDefs>
+		</fixedIngredientFilter>
+		<products>
+			<SimpleCoffee>5</SimpleCoffee>
+		</products>
+		<skillRequirements>
+			<li>
+				<skill>Cooking</skill>
+				<minLevel>4</minLevel>
+			</li>
+		</skillRequirements>
+		<workSkill>Cooking</workSkill>
+		<researchPrerequisite>SimpleCoffee</researchPrerequisite>
+	</RecipeDef>
+
+	<RecipeDef>
+		<defName>BrewBuzzCoffee</defName>
+		<label>brew buzz coffee</label>
+		<description>Make a cup of buzz coffee using psychedelic coffee beans.</description>
+		<jobString>Brewing buzz coffee.</jobString>
+		<workSpeedStat>BrewingSpeed</workSpeedStat>
+		<requiredGiverWorkType>Cooking</requiredGiverWorkType>
+		<effectWorking>Cook</effectWorking>
+		<soundWorking>Recipe_Brewing</soundWorking>
+		<allowMixingIngredients>true</allowMixingIngredients>
+		<workAmount>700</workAmount>
+		<targetCountAdjustment>1</targetCountAdjustment>
+		<recipeUsers>
+			<li>ElectricCoffeeMachine</li>
+		</recipeUsers>
+		<ingredients>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>EnergizedCoffeeBeans</li>
+					</thingDefs>
+				</filter>
+				<count>25</count>
+			</li>
+		</ingredients>
+		<fixedIngredientFilter>
+			<thingDefs>
+				<li>EnergizedCoffeeBeans</li>
+			</thingDefs>
+		</fixedIngredientFilter>
+		<products>
+			<BuzzCoffee>5</BuzzCoffee>
+		</products>
+		<skillRequirements>
+			<li>
+				<skill>Cooking</skill>
+				<minLevel>8</minLevel>
+			</li>
+		</skillRequirements>
+		<workSkill>Cooking</workSkill>
+		<researchPrerequisite>BuzzCoffee</researchPrerequisite>
+	</RecipeDef>
+
+	<RecipeDef>
+		<defName>BrewSweetDecafCoffee</defName>
+		<label>brew sweet decaf coffee</label>
+		<description>Make a cup of sweet decaf coffee using decaffeinated coffee beans.</description>
+		<jobString>Brewing sweet decaf coffee.</jobString>
+		<workSpeedStat>BrewingSpeed</workSpeedStat>
+		<requiredGiverWorkType>Cooking</requiredGiverWorkType>
+		<effectWorking>Cook</effectWorking>
+		<soundWorking>Recipe_Brewing</soundWorking>
+		<allowMixingIngredients>true</allowMixingIngredients>
+		<workAmount>800</workAmount>
+		<targetCountAdjustment>1</targetCountAdjustment>
+		<recipeUsers>
+			<li>ElectricCoffeeMachine</li>
+		</recipeUsers>
+		<ingredients>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>DecafCoffeeBeans</li>
+					</thingDefs>
+				</filter>
+				<count>50</count>
+			</li>
+		</ingredients>
+		<fixedIngredientFilter>
+			<thingDefs>
+				<li>DecafCoffeeBeans</li>
+			</thingDefs>
+		</fixedIngredientFilter>
+		<products>
+			<SweetDecafCoffee>5</SweetDecafCoffee>
+		</products>
+		<skillRequirements>
+			<li>
+				<skill>Cooking</skill>
+				<minLevel>10</minLevel>
+			</li>
+		</skillRequirements>
+		<workSkill>Cooking</workSkill>
+		<researchPrerequisite>SweetDecafCoffee</researchPrerequisite>
+	</RecipeDef>
+
+</RecipeDefs>

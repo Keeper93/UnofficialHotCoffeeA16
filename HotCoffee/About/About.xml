@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+	<name>Hot Coffee</name>
+	<author>Toasty, Dingo</author>
+	<url>https://steamcommunity.com/sharedfiles/filedetails/?id=764752651</url>
+	<targetVersion>0.16.1393</targetVersion>
+	<description>Adds coffee related stuff and things! I don't know how these workers got up before!
+
+- Assign different types of coffee for consumption via the Assign tab Drug Policies.
+*(You might need to create a new drug policy to show coffee)
+
+- Two new production machines: the electric coffee machine and the decaffeination machine.
+
+- Adds a coffee plant, which requires a growing skill of 5 and produces raw coffee beans.
+
+- Four variations of coffee beans, prepared by cooking or using a special machine.
+
+- Different types of coffee with varying effects, research requirements and preparation techniques.
+
+- Coffee keeps your colonists awake! Think of it as a safer, weaker WakeUp.
+
+- Buzz coffee gives colonists a boost to working capabilities, but is risky to consume long-term.
+
+- Sweet decaf coffee makes colonists happy! Be careful about over-consumption, though...</description>
+</ModMetaData>

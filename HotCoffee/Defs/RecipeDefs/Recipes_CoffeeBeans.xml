@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<RecipeDefs>
+
+	<RecipeDef>
+		<defName>CookRawCoffeeBeans</defName>
+		<label>cook raw coffee beans</label>
+		<description>Cooks raw coffee beans to refine their taste and properties.</description>
+		<jobString>Cooking raw coffee beans.</jobString>
+		<workSpeedStat>CookSpeed</workSpeedStat>
+		<requiredGiverWorkType>Cooking</requiredGiverWorkType>
+		<effectWorking>Cook</effectWorking>
+		<soundWorking>Recipe_CookMeal</soundWorking>
+		<allowMixingIngredients>true</allowMixingIngredients>
+		<workAmount>600</workAmount>
+		<targetCountAdjustment>1</targetCountAdjustment>
+		<recipeUsers>
+			<li>Campfire</li>
+			<li>FueledStove</li>
+			<li>ElectricStove</li>
+		</recipeUsers>
+		<ingredients>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>RawCoffeeBeans</li>
+					</thingDefs>
+				</filter>
+				<count>50</count>
+			</li>
+		</ingredients>
+		<fixedIngredientFilter>
+			<thingDefs>
+				<li>RawCoffeeBeans</li>
+			</thingDefs>
+		</fixedIngredientFilter>
+		<products>
+			<CookedCoffeeBeans>50</CookedCoffeeBeans>
+		</products>
+		<skillRequirements>
+			<li>
+				<skill>Cooking</skill>
+				<minLevel>4</minLevel>
+			</li>
+		</skillRequirements>
+		<workSkill>Cooking</workSkill>
+		<researchPrerequisite>SimpleCoffee</researchPrerequisite>
+	</RecipeDef>
+
+	<RecipeDef>
+		<defName>EnergizeCoffeeBeans</defName>
+		<label>cook psychedelic coffee beans</label>
+		<description>Infuses raw coffee beans with psychoid leaves for a truly remarkable result. Turns raw coffee beans into psychedelic coffee beans.</description>
+		<jobString>Cooking psychedelic coffee beans.</jobString>
+		<workSpeedStat>CookSpeed</workSpeedStat>
+		<requiredGiverWorkType>Cooking</requiredGiverWorkType>
+		<effectWorking>Cook</effectWorking>
+		<soundWorking>Recipe_CookMeal</soundWorking>
+		<allowMixingIngredients>true</allowMixingIngredients>
+		<workAmount>700</workAmount>
+		<targetCountAdjustment>1</targetCountAdjustment>
+		<recipeUsers>
+			<li>FueledStove</li>
+			<li>ElectricStove</li>
+		</recipeUsers>
+		<ingredients>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>RawCoffeeBeans</li>
+					</thingDefs>
+				</filter>
+				<count>50</count>
+			</li>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>PsychoidLeaves</li>
+					</thingDefs>
+				</filter>
+				<count>20</count>
+			</li>
+		</ingredients>
+		<fixedIngredientFilter>
+			<thingDefs>
+				<li>RawCoffeeBeans</li>
+				<li>PsychoidLeaves</li>
+			</thingDefs>
+		</fixedIngredientFilter>
+		<products>
+			<EnergizedCoffeeBeans>50</EnergizedCoffeeBeans>
+		</products>
+		<skillRequirements>
+			<li>
+				<skill>Cooking</skill>
+				<minLevel>8</minLevel>
+			</li>
+		</skillRequirements>
+		<workSkill>Cooking</workSkill>
+		<researchPrerequisite>BuzzCoffee</researchPrerequisite>
+	</RecipeDef>
+
+	<RecipeDef>
+		<defName>DecaffeinateCoffeeBeans</defName>
+		<label>decaffeinate coffee beans</label>
+		<description>Removes caffeine from raw coffee beans.</description>
+		<jobString>Decaffeinating raw coffee beans.</jobString>
+		<workSpeedStat>CookSpeed</workSpeedStat>
+		<requiredGiverWorkType>Cooking</requiredGiverWorkType>
+		<effectWorking>Cook</effectWorking>
+		<soundWorking>Recipe_CookMeal</soundWorking>
+		<allowMixingIngredients>true</allowMixingIngredients>
+		<workAmount>800</workAmount>
+		<targetCountAdjustment>1</targetCountAdjustment>
+		<recipeUsers>
+			<li>ElectricDecaffeinationStation</li>
+		</recipeUsers>
+		<ingredients>
+		<li>
+			<filter>
+				<thingDefs>
+					<li>RawCoffeeBeans</li>
+				</thingDefs>
+			</filter>
+			<count>50</count>
+		</li>
+		</ingredients>
+		<fixedIngredientFilter>
+			<thingDefs>
+				<li>RawCoffeeBeans</li>
+			</thingDefs>
+		</fixedIngredientFilter>
+		<products>
+			<DecafCoffeeBeans>50</DecafCoffeeBeans>
+		</products>
+		<skillRequirements>
+			<li>
+				<skill>Cooking</skill>
+				<minLevel>10</minLevel>
+			</li>
+		</skillRequirements>
+		<workSkill>Cooking</workSkill>
+		<researchPrerequisite>SweetDecafCoffee</researchPrerequisite>
+	</RecipeDef>
+
+</RecipeDefs>

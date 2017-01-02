@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+	<!--  Abstract bases -->
+
+	<ThingDef Name="ResourceBase" Abstract="True">
+		<thingClass>ThingWithComps</thingClass>
+		<label>unspecified resource</label>
+		<category>Item</category>
+		<resourceReadoutPriority>Middle</resourceReadoutPriority>
+		<useHitPoints>true</useHitPoints>
+		<selectable>true</selectable>
+		<altitudeLayer>Item</altitudeLayer>
+		<stackLimit>75</stackLimit>
+		<comps>
+			<li Class="CompProperties_Forbiddable"/>
+		</comps>
+		<alwaysHaulable>true</alwaysHaulable>
+		<drawGUIOverlay>true</drawGUIOverlay>
+		<rotatable>false</rotatable>
+		<pathCost>15</pathCost>
+	</ThingDef>
+
+	<ThingDef Abstract="True" Name="OrganicProductBase" ParentName="ResourceBase">
+		<graphicData>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<socialPropernessMatters>true</socialPropernessMatters>
+		<statBases>
+			<MaxHitPoints>100</MaxHitPoints>
+			<Flammability>1.0</Flammability>
+			<DeteriorationRate>10</DeteriorationRate>
+		</statBases>
+		<tickerType>Rare</tickerType>
+	</ThingDef>
+	<ThingDef Abstract="True" Name="PlantFoodRawBase" ParentName="OrganicProductBase">
+		<ingestible>
+			<preferability>RawBad</preferability>
+			<tasteThought>AteRawFood</tasteThought>
+			<nutrition>0.05</nutrition>
+			<ingestEffect>EatVegetarian</ingestEffect>
+			<ingestSound>RawVegetable_Eat</ingestSound>
+		</ingestible>
+		<thingCategories>
+			<li>PlantFoodRaw</li>
+		</thingCategories>
+		<comps>
+			<li Class="CompProperties_FoodPoisoningChance" />
+		</comps>
+	</ThingDef>
+
+	<!-- Coffee beans -->
+
+	<ThingDef ParentName="PlantFoodRawBase">
+		<defName>RawCoffeeBeans</defName>
+		<label>raw coffee beans</label>
+		<description>Raw coffee beans, used to make primitive coffee. Can be cooked or treated in different ways to prepare other types of coffee.</description>
+		<graphicData>
+			<texPath>Things/Item/Beans/RawCoffeeBeans</texPath>
+		</graphicData>
+		<statBases>
+			<MarketValue>0.5</MarketValue>
+		</statBases>
+		<ingestible>
+			<foodType>VegetableOrFruit</foodType>
+			<nutrition>0.01</nutrition>
+		</ingestible>
+		<comps>
+			<li Class="CompProperties_Rottable">
+				<daysToRotStart>60</daysToRotStart>
+			</li>
+		</comps>
+	</ThingDef>
+
+	<ThingDef ParentName="PlantFoodRawBase">
+		<defName>CookedCoffeeBeans</defName>
+		<label>cooked coffee beans</label>
+		<description>Cooked coffee beans, rich in flavour and aroma.</description>
+		<graphicData>
+			<texPath>Things/Item/Beans/CookedCoffeeBeans</texPath>
+		</graphicData>
+		<statBases>
+			<MarketValue>0.8</MarketValue>
+		</statBases>
+		<ingestible>
+			<foodType>VegetableOrFruit</foodType>
+			<nutrition>0.01</nutrition>
+		</ingestible>
+		<comps>
+			<li Class="CompProperties_Rottable">
+				<daysToRotStart>15</daysToRotStart>
+			</li>
+		</comps>
+	</ThingDef>
+
+	<ThingDef ParentName="PlantFoodRawBase">
+		<defName>EnergizedCoffeeBeans</defName>
+		<label>psychedelic coffee beans</label>
+		<description>Coffee beans that were cooked with psychoid leaves. They are bursting with caffeine and contain powerful psychite agents.</description>
+		<graphicData>
+			<texPath>Things/Item/Beans/EnergizedCoffeeBeans</texPath>
+		</graphicData>
+		<statBases>
+			<MarketValue>1.2</MarketValue>
+		</statBases>
+		<ingestible>
+			<foodType>VegetableOrFruit</foodType>
+			<nutrition>0.01</nutrition>
+		</ingestible>
+		<comps>
+			<li Class="CompProperties_Rottable">
+				<daysToRotStart>15</daysToRotStart>
+			</li>
+		</comps>
+	</ThingDef>
+
+	<ThingDef ParentName="PlantFoodRawBase">
+		<defName>DecafCoffeeBeans</defName>
+		<label>decaf coffee beans</label>
+		<description>Coffee beans that have been decaffeinated. They contain only minute traces of caffeine.</description>
+		<graphicData>
+			<texPath>Things/Item/Beans/DecafCoffeeBeans</texPath>
+		</graphicData>
+		<statBases>
+			<MarketValue>1.2</MarketValue>
+		</statBases>
+		<ingestible>
+			<foodType>VegetableOrFruit</foodType>
+			<nutrition>0.01</nutrition>
+		</ingestible>
+		<comps>
+			<li Class="CompProperties_Rottable">
+				<daysToRotStart>15</daysToRotStart>
+			</li>
+		</comps>
+	</ThingDef>
+
+</Defs>

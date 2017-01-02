@@ -1,0 +1,897 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Coffee>
+
+	<!-- Bases to use in the mod (these get discarded after the mod is loaded) -->
+
+ <ThingDef Name="DrugBase" Abstract="True">
+    <thingClass>ThingWithComps</thingClass>
+    <category>Item</category>
+    <useHitPoints>true</useHitPoints>
+    <selectable>true</selectable>
+    <statBases>
+      <MaxHitPoints>50</MaxHitPoints>
+      <Flammability>1.0</Flammability>
+      <DeteriorationRate>2</DeteriorationRate>
+			<Beauty>-6</Beauty>
+    </statBases>
+    <altitudeLayer>Item</altitudeLayer>
+    <stackLimit>400</stackLimit>
+    <socialPropernessMatters>true</socialPropernessMatters>
+    <thingCategories>
+      <li>Drugs</li>
+    </thingCategories>
+    <alwaysHaulable>true</alwaysHaulable>
+    <comps>
+      <li Class="CompProperties_Forbiddable" />
+    </comps>
+    <pathCost>15</pathCost>
+    <resourceReadoutPriority>Last</resourceReadoutPriority>
+    <drawGUIOverlay>true</drawGUIOverlay>
+    <ingestible>
+      <preferability>NeverForNutrition</preferability>
+      <maxNumToIngestAtOnce>1</maxNumToIngestAtOnce>
+      <joyKind>Chemical</joyKind>
+      <chairSearchRadius>8</chairSearchRadius>
+    </ingestible>
+    <storedConceptLearnOpportunity>DrugPolicies</storedConceptLearnOpportunity>
+  </ThingDef>
+
+	<NeedDef Name="DrugAddictionNeedBase" Abstract="True">
+		<onlyIfCausedByHediff>true</onlyIfCausedByHediff>
+		<tutorHighlightTag>NeedAddiction</tutorHighlightTag>
+	</NeedDef>
+
+	<HediffDef Name="DrugToleranceBase" Abstract="True">
+		<hediffClass>HediffWithComps</hediffClass>
+		<defaultLabelColor>(179,86,132)</defaultLabelColor>
+		<maxSeverity>1.0</maxSeverity>
+		<scenarioCanAdd>true</scenarioCanAdd>
+		<stages>
+			<li>
+				<minSeverity>0</minSeverity>
+				<everVisible>false</everVisible>
+			</li>
+			<li>
+				<minSeverity>0.20</minSeverity>
+				<label>small</label>
+			</li>
+			<li>
+				<minSeverity>0.50</minSeverity>
+				<label>large</label>
+			</li>
+			<li>
+				<minSeverity>0.80</minSeverity>
+				<label>massive</label>
+			</li>
+		</stages>
+	</HediffDef>
+
+	<HediffDef Name="AddictionBase" Abstract="True">
+		<defaultLabelColor>(255,0,127)</defaultLabelColor>
+		<initialSeverity>0.5</initialSeverity>
+		<maxSeverity>1.0</maxSeverity>
+		<scenarioCanAdd>true</scenarioCanAdd>
+	</HediffDef>
+
+	<!-- Caffeine -->
+
+	<ChemicalDef>
+		<defName>Caffeine</defName>
+		<label>caffeine</label>
+		<addictionHediff>CaffeineAddiction</addictionHediff>
+		<toleranceHediff>CaffeineTolerance</toleranceHediff>
+	</ChemicalDef>
+
+	<!-- Primitive Coffee -->
+
+	<ThingDef ParentName="DrugBase">
+		<defName>PrimitiveCoffee</defName>
+		<label>primitive coffee</label>
+		<description>Coffee made using raw beans. It tastes disgusting, but has some positive effects when consumed.</description>
+		<graphicData>
+			<texPath>Things/Item/Coffee/PrimitiveCoffee</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<rotatable>false</rotatable>
+		<stackLimit>10</stackLimit>
+		<statBases>
+			<DeteriorationRate>100</DeteriorationRate>
+			<MarketValue>1</MarketValue>
+		    <Mass>0.04</Mass>
+		</statBases>
+		    <tickerType>Rare</tickerType>
+		<ingestible>
+			<foodType>Fluid, Processed</foodType>
+			<nutrition>0.04</nutrition>
+			<joy>0.01</joy>
+			<!-- Joy value must be positive to be assignable as social drug -->
+			<drugCategory>Social</drugCategory>
+			<!-- Can be designated as a joy source in the drug policy UI -->
+			<ingestSound>Ingest_Beer</ingestSound>
+			<ingestHoldOffsetStanding>(0.18,0,0)</ingestHoldOffsetStanding>
+			<!-- Pawns lift the cup to their mouth to drink -->
+			<ingestCommandString>Drink {0}</ingestCommandString>
+			<ingestReportString>Drinking {0}.</ingestReportString>
+			<chairSearchRadius>25</chairSearchRadius>
+			<!-- Pawns will try to sit down in this search radius before drinking -->
+			<outcomeDoers>
+				<li Class="IngestionOutcomeDoer_GiveHediff">
+					<hediffDef>PrimitiveCaffeineRush</hediffDef>
+					<severity>0.25</severity>
+					<!-- One dose gives the effect for 6 hours. This is a function of how much the Hediff decreases per day -->
+					<toleranceChemical>Caffeine</toleranceChemical>
+					<!-- High tolerance will make the effect last for lower periods of time -->
+				</li>
+				<li Class="IngestionOutcomeDoer_GiveHediff">
+					<hediffDef>PrimitiveCaffeineJoy</hediffDef>
+					<severity>0.5</severity>
+					<!-- Workaround made to separate joy thought from caffeine -->
+				</li>
+				<li Class="IngestionOutcomeDoer_OffsetNeed">
+					<need>Rest</need>
+					<offset>0.1</offset>
+					<!-- Reduces the need for rest by a flat 10% -->
+				</li>
+				<li Class="IngestionOutcomeDoer_GiveHediff">
+					<hediffDef>CaffeineTolerance</hediffDef>
+					<severity>0.016</severity>
+					<!-- Tolerance decreases every day at -0.008. Having one cup a day will net a daily total of +0.008 tolerance, two cups a day is +0.024 -->
+				</li>
+			</outcomeDoers>
+		</ingestible>
+		<techLevel>Neolithic</techLevel>
+		<comps>
+			<li Class="CompProperties_Drug">
+				<chemical>Caffeine</chemical>
+				<addictiveness>0.002</addictiveness>
+				<!-- 0.2% chance of addiction, beer is 0.6%. Doesn't addict if tolerance is below minToleranceToAddict -->
+				<minToleranceToAddict>0.48</minToleranceToAddict>
+				<!-- For one coffee a day, addictiveness will be enabled after roughly 60 days. For two a day, roughly 20 days -->
+				<existingAddictionSeverityOffset>0.175</existingAddictionSeverityOffset>
+				<!-- If the pawn is addicted, drinking one dose will set back their recovery by this amount -->
+				<needLevelOffset>0.5</needLevelOffset>
+				<!-- If a pawn is addicted, this value is used to determine how much 1 dose refreshes their caffeine need -->
+				<listOrder>5</listOrder>
+				<!-- Position in the drugs UI -->
+			</li>
+
+
+			<li Class="CompProperties_Rottable">
+				<!-- Has the same rotting properties as food, can be frozed -->
+				<daysToRotStart>0.5</daysToRotStart>
+				<!-- Rots after 12 hours if not refrigerated -->
+				<rotDestroys>true</rotDestroys>
+				<!-- Rotting destroys the coffee (in other words, doesn't have a corpse) -->
+			</li>
+			<li Class="CompProperties_FoodPoisonable" />
+			<!-- Pawns can get food poisoning from it. More likely if a pawn with low Cooking skill made the coffee -->
+		</comps>
+	</ThingDef>
+
+	<!-- Simple Coffee -->
+
+	<ThingDef ParentName="DrugBase">
+		<defName>SimpleCoffee</defName>
+		<label>simple coffee</label>
+		<description>Coffee brewed using cooked beans. It's mild in flavour and has a pleasant aroma.</description>
+		<graphicData>
+			<texPath>Things/Item/Coffee/SimpleCoffee</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<rotatable>false</rotatable>
+		<stackLimit>10</stackLimit>
+		<statBases>
+			<DeteriorationRate>100</DeteriorationRate>
+			<MarketValue>3</MarketValue>
+			<Mass>0.04</Mass>
+		</statBases>
+		    <tickerType>Rare</tickerType>
+		<ingestible>
+			<foodType>Fluid, Processed</foodType>
+			<nutrition>0.08</nutrition>
+			<joy>0.05</joy>
+			<drugCategory>Social</drugCategory>
+			<ingestSound>Ingest_Beer</ingestSound>
+			<ingestHoldOffsetStanding>(0.18,0,0)</ingestHoldOffsetStanding>
+			<ingestCommandString>Drink {0}</ingestCommandString>
+			<ingestReportString>Drinking {0}.</ingestReportString>
+			<chairSearchRadius>25</chairSearchRadius>
+			<outcomeDoers>
+				<li Class="IngestionOutcomeDoer_GiveHediff">
+					<hediffDef>SimpleCaffeineRush</hediffDef>
+					<severity>0.25</severity>
+					<toleranceChemical>Caffeine</toleranceChemical>
+				</li>
+				<li Class="IngestionOutcomeDoer_OffsetNeed">
+					<need>Rest</need>
+					<offset>0.15</offset>
+				</li>
+				<li Class="IngestionOutcomeDoer_GiveHediff">
+					<hediffDef>CaffeineTolerance</hediffDef>
+					<severity>0.016</severity>
+				</li>
+			</outcomeDoers>
+		</ingestible>
+		<techLevel>Industrial</techLevel>
+		<comps>
+			<li Class="CompProperties_Drug">
+				<chemical>Caffeine</chemical>
+				<addictiveness>0.003</addictiveness>
+				<minToleranceToAddict>0.48</minToleranceToAddict>
+				<existingAddictionSeverityOffset>0.175</existingAddictionSeverityOffset>
+				<needLevelOffset>0.5</needLevelOffset>
+				<listOrder>5</listOrder>
+			</li>
+			<li Class="CompProperties_Rottable">
+				<daysToRotStart>0.5</daysToRotStart>
+				<rotDestroys>true</rotDestroys>
+			</li>
+			<li Class="CompProperties_FoodPoisonable" />
+		</comps>
+	</ThingDef>
+
+	<!-- Buzz Coffee -->
+
+	<ThingDef ParentName="DrugBase">
+		<defName>BuzzCoffee</defName>
+		<label>buzz coffee</label>
+		<description>A very strong coffee that stimulates you and keeps you sharp. It might have unforseen side effects.</description>
+		<graphicData>
+			<texPath>Things/Item/Coffee/BuzzCoffee</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<rotatable>false</rotatable>
+		<stackLimit>10</stackLimit>
+		<statBases>
+			<DeteriorationRate>100</DeteriorationRate>
+			<MarketValue>7</MarketValue>
+			<Mass>0.04</Mass>
+		</statBases>
+		    <tickerType>Rare</tickerType>
+		<ingestible>
+			<foodType>Fluid, Processed</foodType>
+			<nutrition>0.1</nutrition>
+			<joy>0.05</joy>
+			<drugCategory>Social</drugCategory>
+			<ingestSound>Ingest_Beer</ingestSound>
+			<ingestHoldOffsetStanding>(0.18,0,0)</ingestHoldOffsetStanding>
+			<ingestCommandString>Drink {0}</ingestCommandString>
+			<ingestReportString>Drinking {0}.</ingestReportString>
+			<chairSearchRadius>25</chairSearchRadius>
+			<outcomeDoers>
+				<li Class="IngestionOutcomeDoer_GiveHediff">
+					<hediffDef>BuzzCaffeineRush</hediffDef>
+					<severity>0.25</severity>
+					<!-- Effects last for 3 hours for balance purposes -->
+					<toleranceChemical>Caffeine</toleranceChemical>
+				</li>
+				<li Class="IngestionOutcomeDoer_OffsetNeed">
+					<need>Rest</need>
+					<offset>0.33</offset>
+					<!-- Much higher rest offset but not enough to compete with WakeUp -->
+				</li>
+				<li Class="IngestionOutcomeDoer_GiveHediff">
+					<hediffDef>CaffeineTolerance</hediffDef>
+					<severity>0.064</severity>
+					<!-- Much higher tolerance effect -->
+				</li>
+			</outcomeDoers>
+		</ingestible>
+		<techLevel>Industrial</techLevel>
+		<comps>
+			<li Class="CompProperties_Drug">
+				<chemical>Caffeine</chemical>
+				<addictiveness>0.01</addictiveness>
+				<!-- 1% chance of addiction -->
+				<minToleranceToAddict>0.32</minToleranceToAddict>
+				<existingAddictionSeverityOffset>0.275</existingAddictionSeverityOffset>
+				<!-- Higher addiction impact if already addicted -->
+				<needLevelOffset>1</needLevelOffset>
+				<!-- One buzz coffee fills the need bar if addicted -->
+				<listOrder>5</listOrder>
+			</li>
+			<li Class="CompProperties_Rottable">
+				<daysToRotStart>0.5</daysToRotStart>
+				<rotDestroys>true</rotDestroys>
+			</li>
+			<li Class="CompProperties_FoodPoisonable" />
+		</comps>
+	</ThingDef>
+
+	<!-- Sweet Decaf Coffee with Marshmallows -->
+
+	<ThingDef ParentName="DrugBase">
+		<defName>SweetDecafCoffee</defName>
+		<label>sweet decaf coffee</label>
+		<description>A sweet coffee that is very tasty. It's low on caffeine, which means it's almost non-addictive. However, its high sugar content warrants moderate consumption.</description>
+		<graphicData>
+			<texPath>Things/Item/Coffee/SweetDecafCoffee</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<rotatable>false</rotatable>
+		<stackLimit>10</stackLimit>
+		<statBases>
+			<DeteriorationRate>100</DeteriorationRate>
+			<MarketValue>10</MarketValue>
+			<Mass>0.04</Mass>
+		</statBases>
+		    <tickerType>Rare</tickerType>
+		<ingestible>
+			<foodType>Fluid, Processed</foodType>
+			<nutrition>0.30</nutrition>
+			<joy>0.20</joy>
+			<drugCategory>Social</drugCategory>
+			<ingestSound>Ingest_Beer</ingestSound>
+			<ingestHoldOffsetStanding>(0.18,0,0)</ingestHoldOffsetStanding>
+			<ingestCommandString>Drink {0}</ingestCommandString>
+			<ingestReportString>Drinking {0}.</ingestReportString>
+			<chairSearchRadius>25</chairSearchRadius>
+			<outcomeDoers>
+				<li Class="IngestionOutcomeDoer_GiveHediff">
+					<hediffDef>SweetDecafSugarRush</hediffDef>
+					<severity>0.25</severity>
+					<!-- One drink lasts roughly 6 hours -->
+					<toleranceChemical>Caffeine</toleranceChemical>
+				</li>
+				<li Class="IngestionOutcomeDoer_GiveHediff">
+					<hediffDef>SweetDecafJoy</hediffDef>
+					<severity>0.5</severity>
+				</li>
+				<li Class="IngestionOutcomeDoer_GiveHediff">
+					<hediffDef>CaffeineTolerance</hediffDef>
+					<severity>0.004</severity>
+					<!-- Two decafs a day will net 0 tolerance change -->
+				</li>
+			</outcomeDoers>
+		</ingestible>
+		<techLevel>Industrial</techLevel>
+		<comps>
+			<li Class="CompProperties_Drug">
+				<chemical>Caffeine</chemical>
+				<addictiveness>0.001</addictiveness>
+				<!-- 0.1% chance of addiction -->
+				<minToleranceToAddict>0.64</minToleranceToAddict>
+				<!-- Addiction enabled at a higher tolerance than normal -->
+				<existingAddictionSeverityOffset>0.01</existingAddictionSeverityOffset>
+				<!-- Almost doesn't affect caffeine addiction -->
+				<needLevelOffset>0.05</needLevelOffset>
+				<!-- Almost doesn't affect caffeine need when addicted -->
+				<listOrder>5</listOrder>
+			</li>
+			<li Class="CompProperties_Rottable">
+				<daysToRotStart>0.5</daysToRotStart>
+				<rotDestroys>true</rotDestroys>
+			</li>
+			<li Class="CompProperties_FoodPoisonable" />
+		</comps>
+	</ThingDef>
+
+	<!-- Primitive Caffeine Rush and thought workaround -->
+
+	<HediffDef>
+		<defName>PrimitiveCaffeineRush</defName>
+		<hediffClass>HediffWithComps</hediffClass>
+		<label>coffee'd up (primitive)</label>
+		<!-- This is the label the user will see in their health tab -->
+		<defaultLabelColor>(1,0,0.5)</defaultLabelColor>
+		<scenarioCanAdd>true</scenarioCanAdd>
+		<maxSeverity>0.5</maxSeverity>
+		<!-- Limits stacking effects to avoid abuse -->
+		<comps>
+			      <li Class="HediffCompProperties_SeverityPerDay">
+        			<severityPerDay>-1.0</severityPerDay>
+     			 </li>
+		</comps>
+		<stages>
+			<li>
+				<restFallFactor>0.9</restFallFactor>
+				<!-- Pawns will be 10% less tired -->
+				<capMods>
+					<!-- Buffs or debuffs to health and skills -->
+					<li>
+						<capacity>Consciousness</capacity>
+						<offset>0.1</offset>
+					</li>
+					<li>
+						<capacity>Moving</capacity>
+						<offset>0.1</offset>
+					</li>
+					<li>
+						<capacity>Manipulation</capacity>
+						<offset>0.1</offset>
+					</li>
+				</capMods>
+			</li>
+		</stages>
+	</HediffDef>
+
+	<HediffDef>
+		<defName>PrimitiveCaffeineJoy</defName>
+		<hediffClass>HediffWithComps</hediffClass>
+		<label>primitive caffeine joy impact</label>
+		<maxSeverity>0.5</maxSeverity>
+		<comps>
+			      <li Class="HediffCompProperties_SeverityPerDay">
+       			 <severityPerDay>-4.0</severityPerDay>
+     			 </li>
+		</comps>
+		<stages>
+			<li>
+				<everVisible>false</everVisible>
+			</li>
+		</stages>
+	</HediffDef>
+
+	<!-- Simple Caffeine Rush, similar to primitive rush but leads to a positive joy buff. Lasts for twice as long -->
+
+	<HediffDef>
+		<defName>SimpleCaffeineRush</defName>
+		<hediffClass>HediffWithComps</hediffClass>
+		<label>coffee'd up</label>
+		<defaultLabelColor>(1,0,0.5)</defaultLabelColor>
+		<scenarioCanAdd>true</scenarioCanAdd>
+		<maxSeverity>0.5</maxSeverity>
+		<comps>
+				      <li Class="HediffCompProperties_SeverityPerDay">
+    				    <severityPerDay>-1.0</severityPerDay>
+     				 </li>
+		</comps>
+		<stages>
+			<li>
+				<restFallFactor>0.9</restFallFactor>
+				<capMods>
+					<li>
+						<capacity>Consciousness</capacity>
+						<offset>0.1</offset>
+					</li>
+					<li>
+						<capacity>Moving</capacity>
+						<offset>0.1</offset>
+					</li>
+					<li>
+						<capacity>Manipulation</capacity>
+						<offset>0.1</offset>
+					</li>
+				</capMods>
+			</li>
+		</stages>
+	</HediffDef>
+
+	<!-- Buzz Caffeine Rush, high risk high reward -->
+
+	<HediffDef>
+		<defName>BuzzCaffeineRush</defName>
+		<hediffClass>HediffWithComps</hediffClass>
+		<label>caffeine rush</label>
+		<defaultLabelColor>(1,0,0.5)</defaultLabelColor>
+		<scenarioCanAdd>true</scenarioCanAdd>
+		<maxSeverity>1.0</maxSeverity>
+		<comps>
+      <li Class="HediffCompProperties_SeverityPerDay">
+        <severityPerDay>-2.0</severityPerDay>
+      </li>
+		</comps>
+		<stages>
+			<li>
+				<minSeverity>0.15</minSeverity>
+				<!-- Controls the Hediff stage, it will increase if more of the item is consumed and decrease naturally over time -->
+				<label>normal</label>
+				<!-- Sub-label applied in the health tab. It will read "Caffeine rush (normal)" at this level -->
+				<restFallFactor>0.85</restFallFactor>
+				<capMods>
+					<li>
+						<capacity>Consciousness</capacity>
+						<offset>0.20</offset>
+					</li>
+					<li>
+						<capacity>Moving</capacity>
+						<offset>0.20</offset>
+					</li>
+					<li>
+						<capacity>Manipulation</capacity>
+						<offset>0.20</offset>
+					</li>
+				</capMods>
+				<statOffsets>
+					<WorkSpeedGlobal>0.1</WorkSpeedGlobal>
+					<!-- 10% increased work speed -->
+				</statOffsets>
+				<hediffGivers>
+					<li Class="HediffGiver_Random">
+						<hediff>HeartAttack</hediff>
+						<mtbDays>120</mtbDays>
+						<!-- It can randomly trigger a heart attack like WakeUp -->
+					</li>
+				</hediffGivers>
+			</li>
+			<li>
+				<minSeverity>0.4</minSeverity>
+				<label>elevated</label>
+				<restFallFactor>0.8</restFallFactor>
+				<capMods>
+					<li>
+						<capacity>Consciousness</capacity>
+						<offset>0.25</offset>
+					</li>
+					<li>
+						<capacity>Moving</capacity>
+						<offset>0.25</offset>
+					</li>
+					<li>
+						<capacity>Manipulation</capacity>
+						<offset>0.25</offset>
+					</li>
+				</capMods>
+				<statOffsets>
+					<WorkSpeedGlobal>0.1</WorkSpeedGlobal>
+				</statOffsets>
+				<hediffGivers>
+					<li Class="HediffGiver_Random">
+						<hediff>HeartAttack</hediff>
+						<mtbDays>80</mtbDays>
+						<!-- Riskier to have more than one day -->
+					</li>
+				</hediffGivers>
+			</li>
+			<li>
+				<minSeverity>0.65</minSeverity>
+				<label>dangerous</label>
+				<restFallFactor>0.75</restFallFactor>
+				<capMods>
+					<li>
+						<capacity>Consciousness</capacity>
+						<offset>0.27</offset>
+					</li>
+					<li>
+						<capacity>Moving</capacity>
+						<offset>0.27</offset>
+					</li>
+					<li>
+						<capacity>Manipulation</capacity>
+						<offset>0.27</offset>
+					</li>
+				</capMods>
+				<statOffsets>
+					<WorkSpeedGlobal>0.15</WorkSpeedGlobal>
+				</statOffsets>
+				<hediffGivers>
+					<li Class="HediffGiver_Random">
+						<hediff>HeartAttack</hediff>
+						<mtbDays>25</mtbDays>
+					</li>
+				</hediffGivers>
+			</li>
+			<li>
+				<minSeverity>0.8</minSeverity>
+				<label>extremely dangerous</label>
+				<restFallFactor>0.66</restFallFactor>
+				<capMods>
+					<li>
+						<capacity>Consciousness</capacity>
+						<offset>0.33</offset>
+					</li>
+					<li>
+						<capacity>Moving</capacity>
+						<offset>0.33</offset>
+					</li>
+					<li>
+						<capacity>Manipulation</capacity>
+						<offset>0.33</offset>
+					</li>
+				</capMods>
+				<statOffsets>
+					<WorkSpeedGlobal>0.25</WorkSpeedGlobal>
+				</statOffsets>
+				<hediffGivers>
+					<li Class="HediffGiver_Random">
+						<hediff>HeartAttack</hediff>
+						<mtbDays>10</mtbDays>
+					</li>
+				</hediffGivers>
+			</li>
+		</stages>
+	</HediffDef>
+
+	<!-- Sweet Decaf Sugar Rush and thought workaround -->
+
+	<HediffDef>
+		<defName>SweetDecafSugarRush</defName>
+		<hediffClass>HediffWithComps</hediffClass>
+		<label>sugar rush</label>
+		<defaultLabelColor>(1,0,0.5)</defaultLabelColor>
+		<scenarioCanAdd>true</scenarioCanAdd>
+		<maxSeverity>2.5</maxSeverity>
+		<comps>
+      <li Class="HediffCompProperties_SeverityPerDay">
+        <severityPerDay>-1.0</severityPerDay>
+      </li>
+		</comps>
+		<stages>
+			<li>
+				<minSeverity>0.05</minSeverity>
+				<label>low</label>
+				<hungerRateFactor>1.1</hungerRateFactor>
+				<!-- Pawn gets hungry slightly faster (high glycemic index) -->
+				<capMods>
+					<!-- Low effect on modifiers due to decaf nature -->
+					<li>
+						<capacity>Consciousness</capacity>
+						<offset>0.025</offset>
+					</li>
+					<li>
+						<capacity>Moving</capacity>
+						<offset>0.025</offset>
+					</li>
+					<li>
+						<capacity>Manipulation</capacity>
+						<offset>-0.03</offset>
+						<!-- Manipulation decreased slightly due to sugary properties -->
+					</li>
+				</capMods>
+			</li>
+			<li>
+				<minSeverity>0.40</minSeverity>
+				<label>elevated</label>
+				<hungerRateFactor>1.15</hungerRateFactor>
+				<!-- Increased further -->
+				<capMods>
+					<li>
+						<capacity>Consciousness</capacity>
+						<offset>0.05</offset>
+					</li>
+					<li>
+						<capacity>Moving</capacity>
+						<offset>0.05</offset>
+					</li>
+					<li>
+						<capacity>Manipulation</capacity>
+						<offset>-0.05</offset>
+					</li>
+				</capMods>
+			</li>
+			<li>
+				<minSeverity>0.60</minSeverity>
+				<label>drank too much</label>
+				<hungerRateFactor>1.1</hungerRateFactor>
+				<vomitMtbDays>0.25</vomitMtbDays>
+				<!-- Pawn will vomit sometimes at this stage and above -->
+				<capMods>
+					<!-- Mods all become negative due to overconsumption -->
+					<li>
+						<capacity>Consciousness</capacity>
+						<offset>-0.15</offset>
+					</li>
+					<li>
+						<capacity>Moving</capacity>
+						<offset>-0.10</offset>
+					</li>
+					<li>
+						<capacity>Manipulation</capacity>
+						<offset>-0.10</offset>
+					</li>
+				</capMods>
+			</li>
+			<li>
+				<minSeverity>0.80</minSeverity>
+				<label>sick</label>
+				<hungerRateFactor>0.9</hungerRateFactor>
+				<!-- Lower due to nausea -->
+				<vomitMtbDays>0.125</vomitMtbDays>
+				<capMods>
+					<li>
+						<capacity>Consciousness</capacity>
+						<offset>-0.33</offset>
+					</li>
+					<li>
+						<capacity>Moving</capacity>
+						<offset>-0.25</offset>
+					</li>
+					<li>
+						<capacity>Manipulation</capacity>
+						<offset>-0.5</offset>
+					</li>
+					<li>
+						<capacity>Metabolism</capacity>
+						<offset>-0.25</offset>
+					</li>
+				</capMods>
+			</li>
+		</stages>
+	</HediffDef>
+
+	<HediffDef>
+		<defName>SweetDecafJoy</defName>
+		<hediffClass>HediffWithComps</hediffClass>
+		<label>sweet decaf joy impact</label>
+		<maxSeverity>0.5</maxSeverity>
+		<comps>
+      <li Class="HediffCompProperties_SeverityPerDay">
+        <severityPerDay>-3.0</severityPerDay>
+      </li>
+		</comps>
+		<stages>
+			<li>
+				<everVisible>false</everVisible>
+			</li>
+		</stages>
+	</HediffDef>
+
+	<!-- Caffeine addiction and withdrawal -->
+
+	<NeedDef ParentName="DrugAddictionNeedBase">
+		<defName>Chemical_Caffeine</defName>
+		<needClass>Need_Chemical</needClass>
+		<label>caffeine</label>
+		<description>\nThis person is addicted to caffeine. \n\nThey need to regularly consume caffeinated beverages to avoid withdrawal symptoms.</description>
+		<fallPerDay>1.5</fallPerDay>
+		<!-- Divide this value by 0.24 for the hourly decrease percentage -->
+		<listPriority>35</listPriority>
+	</NeedDef>
+
+	<HediffDef ParentName="DrugToleranceBase">
+		<defName>CaffeineTolerance</defName>
+		<label>caffeine tolerance</label>
+		<comps>
+			      <li Class="HediffCompProperties_SeverityPerDay">
+        <severityPerDay>-0.008</severityPerDay>
+      </li>
+				 <li Class="HediffCompProperties_DrugEffectFactor">
+				<chemical>Caffeine</chemical>
+			</li>
+		</comps>
+	</HediffDef>
+
+	<HediffDef ParentName="AddictionBase">
+		<defName>CaffeineAddiction</defName>
+		<hediffClass>Hediff_Addiction</hediffClass>
+		<label>caffeine addiction</label>
+		<causesNeed>Chemical_Caffeine</causesNeed>
+		<comps>
+			      <li Class="HediffCompProperties_SeverityPerDay">
+        <severityPerDay>-0.125</severityPerDay>
+      </li>
+
+		</comps>
+		<stages>
+			<li>
+			</li>
+			<li>
+				<label>withdrawal</label>
+				<restFallFactor>1.15</restFallFactor>
+				<socialFightChanceFactor>1.25</socialFightChanceFactor>
+				<!-- Pawns experiencing withdrawal will be more likely to have a fist fight -->
+				<vomitMtbDays>0.85</vomitMtbDays>
+				<capMods>
+					<li>
+						<capacity>Consciousness</capacity>
+						<offset>-0.20</offset>
+					</li>
+					<li>
+						<capacity>Moving</capacity>
+						<offset>-0.15</offset>
+					</li>
+					<li>
+						<capacity>Manipulation</capacity>
+						<offset>-0.20</offset>
+					</li>
+				</capMods>
+				<mentalStateGivers>
+					<li>
+						<mentalState>WanderSad</mentalState>
+						<mtbDays>10</mtbDays>
+					</li>
+					<li>
+						<mentalState>WanderPsychotic</mentalState>
+						<mtbDays>60</mtbDays>
+					</li>
+				</mentalStateGivers>
+			</li>
+		</stages>
+	</HediffDef>
+
+	<ThoughtDef>
+		<defName>CaffeineWithdrawal</defName>
+		<workerClass>ThoughtWorker_Hediff</workerClass>
+		<hediff>CaffeineAddiction</hediff>
+		<stages>
+			<li>
+				<visible>false</visible>
+				<!-- Not visible when there are no symptoms -->
+			</li>
+			<li>
+				<label>caffeine withdrawal</label>
+				<description>I feel so tired and anxious without my coffee fix...</description>
+				<baseMoodEffect>-10</baseMoodEffect>
+			</li>
+		</stages>
+	</ThoughtDef>
+
+	<!-- Coffee Thought Manipulators -->
+
+	<!-- Primitive Coffee -->
+
+	<ThoughtDef>
+		<defName>ConsumedPrCoffee</defName>
+		<workerClass>ThoughtWorker_Hediff</workerClass>
+		<!-- Lasts for the duration of the hediff -->
+		<hediff>PrimitiveCaffeineJoy</hediff>
+		<!-- Which hediff triggers the thought -->
+		<stages>
+			<li>
+				<label>uurrgghh!</label>
+				<description>That coffee was gross, maybe I should cook the beans next time.</description>
+				<baseMoodEffect>-5</baseMoodEffect>
+			</li>
+		</stages>
+	</ThoughtDef>
+
+	<!-- Simple Coffee -->
+
+	<ThoughtDef>
+		<defName>ConsumedSiCoffee</defName>
+		<workerClass>ThoughtWorker_Hediff</workerClass>
+		<hediff>SimpleCaffeineRush</hediff>
+		<stages>
+			<li>
+				<label>coffee'd up</label>
+				<description>Feeling pumped, ready to go get the day.</description>
+				<baseMoodEffect>5</baseMoodEffect>
+			</li>
+		</stages>
+	</ThoughtDef>
+
+	<!-- Buzz Coffee -->
+
+	<ThoughtDef>
+		<defName>ConsumedBzCoffee</defName>
+		<workerClass>ThoughtWorker_Hediff</workerClass>
+		<hediff>BuzzCaffeineRush</hediff>
+		<stages>
+			<li>
+				<label>caffeine rush</label>
+				<description>I'm so pumped and buzzed, I can feel my heart pounding!</description>
+				<baseMoodEffect>5</baseMoodEffect>
+			</li>
+		</stages>
+	</ThoughtDef>
+
+	<!-- Sweet Decaf Coffee -->
+
+	<ThoughtDef>
+		<defName>ConsumedSweetDecaf</defName>
+		<workerClass>ThoughtWorker_Hediff</workerClass>
+		<hediff>SweetDecafSugarRush</hediff>
+		<stages>
+			<li>
+				<visible>false</visible>
+			</li>
+			<li>
+				<visible>false</visible>
+			</li>
+			<li>
+				<label>Nauseous</label>
+				<description>I think I had too much sugar...</description>
+				<baseMoodEffect>-8</baseMoodEffect>
+			</li>
+			<li>
+				<label>Extremely nauseous</label>
+				<description>I drank way too much decaf. I feel horrible!</description>
+				<baseMoodEffect>-15</baseMoodEffect>
+			</li>
+		</stages>
+	</ThoughtDef>
+
+	<ThoughtDef>
+		<defName>SDecafJoy</defName>
+		<workerClass>ThoughtWorker_Hediff</workerClass>
+		<hediff>SweetDecafJoy</hediff>
+		<stages>
+			<li>
+				<label>delicious coffee</label>
+				<description>I had some fantastic coffee! Such a delightful treat.</description>
+				<baseMoodEffect>8</baseMoodEffect>
+			</li>
+		</stages>
+	</ThoughtDef>
+
+</Coffee>
